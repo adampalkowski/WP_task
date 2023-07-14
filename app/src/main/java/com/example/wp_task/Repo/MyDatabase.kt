@@ -1,8 +1,6 @@
-package com.example.wp_task.roomDb
+package com.example.wp_task.Repo
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.wp_task.model.MovieData
 

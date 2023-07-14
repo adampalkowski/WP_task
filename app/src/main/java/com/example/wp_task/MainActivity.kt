@@ -5,17 +5,20 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.room.Room
 import com.example.wp_task.Screens.MovieEvents
 import com.example.wp_task.Screens.ScreenNav
 import com.example.wp_task.ViewModels.FavouritesViewModel
 import com.example.wp_task.ViewModels.MainViewModel
-import com.example.wp_task.roomDb.MovieDatabase
-import com.example.wp_task.roomDb.MovieRepository
+import com.example.wp_task.Repo.MovieDatabase
+import com.example.wp_task.Repo.MovieRepository
 import com.example.wp_task.model.Movie
 import com.example.wp_task.model.MovieData
 import com.example.wp_task.ui.theme.WP_taskTheme
@@ -36,7 +39,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             WP_taskTheme {
                 var movie by remember { mutableStateOf<Movie?>(null) }
-
                 var movieList by remember { mutableStateOf<List<MovieData>>(emptyList()) }
                 movieList = favouritesViewModel.movies.value as List<MovieData>
 
@@ -53,7 +55,6 @@ class MainActivity : ComponentActivity() {
                                         titleText = movie!!.titleText?.text.toString()
                                     )
                                     favouritesViewModel.insertMovie(movieData)
-
                                 }
                                 is MovieEvents.UnLike -> {
                                     val movieData =
@@ -66,9 +67,10 @@ class MainActivity : ComponentActivity() {
                         movieList = movieList,
                     )
                 }else{
-                    CircularProgressIndicator()
+                    Box(modifier = Modifier.fillMaxSize()){
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
                 }
-
 
                 val toastMessage: String? by favouritesViewModel.toastState.observeAsState()
                 if (toastMessage != null) {

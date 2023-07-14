@@ -6,7 +6,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +23,14 @@ import com.example.wp_task.model.MovieData
 
 
 @Composable
-fun MovieDisplayScreen(movie: Movie, onEvent: (MovieEvents) -> Unit) {
+fun MovieDisplayScreen(movie: Movie, onEvent: (MovieEvents) -> Unit,favourite:Boolean) {
+    var favouriteState by rememberSaveable{ mutableStateOf(favourite) }
+    LaunchedEffect(movie._id,favourite) {
+        // Reset favouriteState when movie changes
+        favouriteState = favourite
+    }
+
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -68,18 +76,31 @@ fun MovieDisplayScreen(movie: Movie, onEvent: (MovieEvents) -> Unit) {
                             painter = painterResource(id = R.drawable.ic_refresh),
                             contentDescription = "get new movie icon"
                         )
-
                     }
                     Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { onEvent(MovieEvents.AddToFavourite) }) {
-                        Icon(
-                            modifier = Modifier.size(48.dp),
-                            painter = painterResource(id = R.drawable.ic_heart),
-                            contentDescription = "favourite movie icon ", tint = Color.Red
-                        )
+                    if(favouriteState){
+                        IconButton(onClick = { onEvent(MovieEvents.UnLike(id=movie._id, title = movie.titleText.text))
+                            favouriteState=false
+                        }) {
+                            Icon(
+                                modifier = Modifier.size(48.dp),
+                                painter = painterResource(id = R.drawable.ic_heart_filled),
+                                contentDescription = "favourite movie icon ", tint = Color.Red
+                            )
+                        }
 
+                    }else{
+                        IconButton(onClick = { onEvent(MovieEvents.AddToFavourite)
+                            favouriteState=true}) {
+                            Icon(
+                                modifier = Modifier.size(48.dp),
+                                painter = painterResource(id = R.drawable.ic_heart),
+                                contentDescription = "favourite movie icon ", tint = Color.Red
+                            )
+                        }
 
                     }
+
                 }
             }
         }
