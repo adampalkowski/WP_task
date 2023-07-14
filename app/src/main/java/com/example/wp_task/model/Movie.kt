@@ -3,7 +3,6 @@ package com.example.wp_task.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-
 data class Data(
     val entries: Int,
     val results: List<Movie>
@@ -17,7 +16,6 @@ data class MovieData(
     @PrimaryKey val _id: String,
     val titleText: String
 )
-
 
 data class Movie(
     val _id: String,

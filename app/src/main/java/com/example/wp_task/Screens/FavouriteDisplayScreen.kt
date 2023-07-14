@@ -13,10 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.wp_task.Screens.MovieEvents
 import com.example.wp_task.model.Movie
 import com.example.wp_task.model.MovieData
 import com.google.gson.annotations.Until
-
 
 @Composable
 fun FavouriteDisplayScreen(onEvent: (MovieEvents) -> Unit, movies: List<MovieData>) {

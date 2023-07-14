@@ -16,22 +16,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.wp_task.Screens.MovieEvents
 import com.example.wp_task.model.Movie
 import com.example.wp_task.model.MovieData
-
-
-sealed class MovieEvents {
-    /**
-     * Event of unliking a movie, needs params to delete the MovieData from Room database.
-     *
-     * @param id the ID of the movie.
-     * @param title the title of the movie.
-     */
-    class UnLike(val id: String, val title: String) : MovieEvents()
-    object NewMovie : MovieEvents()
-    object AddToFavourite : MovieEvents()
-}
-
 
 
 @Composable
@@ -95,12 +82,7 @@ fun MovieDisplayScreen(movie: Movie, onEvent: (MovieEvents) -> Unit) {
                     }
                 }
             }
-
-
         }
-
-
     }
-
 
 }

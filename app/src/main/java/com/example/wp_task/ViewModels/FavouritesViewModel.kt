@@ -1,4 +1,4 @@
-package com.example.wp_task
+package com.example.wp_task.ViewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,8 +10,14 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
+
+/**
+ View-model that handles interaction with room database, to store favorites.
+ */
 class FavouritesViewModel(private val movieRepository: MovieRepository) : ViewModel() {
+    // BehaviorSubject to hold the list of movies
     val movies: BehaviorSubject<List<MovieData>> = BehaviorSubject.createDefault(emptyList())
+
     private val disposables = CompositeDisposable()
     private val _toastState: MutableLiveData<String> = MutableLiveData()
     val toastState: LiveData<String> = _toastState
@@ -20,11 +26,13 @@ class FavouritesViewModel(private val movieRepository: MovieRepository) : ViewMo
         fetchMovies()
     }
 
-     fun clearToastState() {
-         _toastState.value=null
-     }
-         fun fetchMovies() {
+    // Clear the toast state
+    fun clearToastState() {
+        _toastState.value = null
+    }
 
+    // Fetch movies from the repository
+    fun fetchMovies() {
         movieRepository.getAllMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -39,13 +47,13 @@ class FavouritesViewModel(private val movieRepository: MovieRepository) : ViewMo
             .let { disposables.add(it) }
     }
 
+    // Insert a movie into the repository
     fun insertMovie(movie: MovieData) {
         movieRepository.insertMovie(movie)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-
                     fetchMovies()
                     _toastState.value = "Movie added to favorites"
                 },
@@ -56,6 +64,7 @@ class FavouritesViewModel(private val movieRepository: MovieRepository) : ViewMo
             .let { disposables.add(it) }
     }
 
+    // Delete a movie from the repository
     fun deleteMovie(movie: MovieData) {
         movieRepository.deleteMovie(movie)
             .subscribeOn(Schedulers.io())
@@ -72,9 +81,9 @@ class FavouritesViewModel(private val movieRepository: MovieRepository) : ViewMo
             .let { disposables.add(it) }
     }
 
+    // Clean up resources
     override fun onCleared() {
         super.onCleared()
         disposables.clear()
     }
-
 }
