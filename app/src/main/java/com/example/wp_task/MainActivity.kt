@@ -42,7 +42,8 @@ class MainActivity : ComponentActivity() {
                 var movieList by remember { mutableStateOf<List<MovieData>>(emptyList()) }
                 movieList = favouritesViewModel.movies.value as List<MovieData>
 
-
+                /*Main screen*/
+                //with no internet connection can't display the favourites screen
                 movie?.let { nonNullMovie ->
                     ScreenNav(
                         onEvent = { event ->
@@ -72,11 +73,13 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
+               /*Display toast on insert or delete*/
                 val toastMessage: String? by favouritesViewModel.toastState.observeAsState()
                 if (toastMessage != null) {
                     Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show()
                     favouritesViewModel.clearToastState()
                 }
+                /*Pass the movie to ui*/
                 mainViewModel.currentMovie.observe(
                     this
                 ) {

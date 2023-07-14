@@ -51,7 +51,7 @@ class MainViewModel : ViewModel() {
                     _currentMovieIndex.value = 0 // Reset the index
                     getNextMovie()
                 },
-                {
+                {error->
                     _currentMovie.postValue(Response.Failure(e=Exception( "Failed to load movies")))
                 }
             )

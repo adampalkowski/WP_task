@@ -43,7 +43,7 @@ fun MovieDisplayScreen(movie: Movie, onEvent: (MovieEvents) -> Unit,favourite:Bo
             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
 
                 if(movie.primaryImage!=null){
-                    AsyncImage(modifier = Modifier.heightIn(min=250.dp,max=1000.dp),model = movie.primaryImage.url, contentDescription = "movie poster")
+                    AsyncImage(modifier = Modifier,model = movie.primaryImage.url, contentDescription = "movie poster")
 
                 }else{
                     Text(

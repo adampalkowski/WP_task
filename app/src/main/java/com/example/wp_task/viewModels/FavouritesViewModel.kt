@@ -32,7 +32,7 @@ class FavouritesViewModel(private val movieRepository: MovieRepository) : ViewMo
     }
 
     // Fetch movies from the repository
-    fun fetchMovies() {
+    private fun fetchMovies() {
         movieRepository.getAllMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -41,7 +41,8 @@ class FavouritesViewModel(private val movieRepository: MovieRepository) : ViewMo
                     movies.onNext(list)
                 },
                 { error ->
-                    // Handle error
+                    _toastState.value = "Failed to fetch movies"
+                    fetchMovies()
                 }
             )
             .let { disposables.add(it) }
