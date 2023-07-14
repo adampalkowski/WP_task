@@ -1,22 +1,15 @@
-package com.example.wp_task.Screens
+package com.example.wp_task.screens
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import com.example.wp_task.FavouriteDisplayScreen
-import com.example.wp_task.MovieDisplayScreen
 import com.example.wp_task.model.Movie
 import com.example.wp_task.model.MovieData
 
@@ -65,7 +58,6 @@ fun ScreenNav(
         ) { page ->
             when (page) {
                 0 -> {
-
                     MovieDisplayScreen(movie, onEvent = onEvent, favourite = favourite)
                 }
                 1 -> {
@@ -74,7 +66,6 @@ fun ScreenNav(
                     } else {
                         Box(Modifier.fillMaxSize()) {
                             Text("No favorites available")
-
                         }
                     }
                 }

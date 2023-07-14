@@ -1,4 +1,4 @@
-package com.example.wp_task.Api
+package com.example.wp_task.api
 
 import com.example.wp_task.model.Data
 import retrofit2.http.GET

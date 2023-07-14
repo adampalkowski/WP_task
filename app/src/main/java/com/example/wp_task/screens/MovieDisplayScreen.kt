@@ -1,4 +1,4 @@
-package com.example.wp_task
+package com.example.wp_task.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -17,14 +17,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.wp_task.Screens.MovieEvents
+import com.example.wp_task.R
 import com.example.wp_task.model.Movie
-import com.example.wp_task.model.MovieData
 
 
 @Composable
 fun MovieDisplayScreen(movie: Movie, onEvent: (MovieEvents) -> Unit,favourite:Boolean) {
     var favouriteState by rememberSaveable{ mutableStateOf(favourite) }
+
+    //reset the favourite icon on change of the movie and if favourites was removed
     LaunchedEffect(movie._id,favourite) {
         // Reset favouriteState when movie changes
         favouriteState = favourite
@@ -40,32 +41,47 @@ fun MovieDisplayScreen(movie: Movie, onEvent: (MovieEvents) -> Unit,favourite:Bo
             .fillMaxSize()
             .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.SpaceBetween) {
             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
-                if (movie.primaryImage == null) {
-                    Text(text = "Missing poster : id-" + movie.id)
-                } else {
-                    AsyncImage(modifier = Modifier.heightIn(min=250.dp,max=1000.dp),model = movie.primaryImage.url, contentDescription = "movie poster")
-                }
 
-                Spacer(modifier = Modifier.height(24.dp))
-                if (movie.titleText == null) {
-                    Text(text = "Missing title : id-" + movie.id)
-                } else {
+                if(movie.primaryImage!=null){
+                    AsyncImage(modifier = Modifier.heightIn(min=250.dp,max=1000.dp),model = movie.primaryImage.url, contentDescription = "movie poster")
+
+                }else{
                     Text(
-                        text = movie.titleText.text,
+                        text = "Missing poster",
                         style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
                     )
                 }
 
 
+                Spacer(modifier = Modifier.height(24.dp))
+                if(movie.titleText!=null){
+                    Text(
+                        text = movie.titleText.text,
+                        style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
+                    )
+                }else{
+                    Text(
+                        text = "Missing title",
+                        style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
+                    )
+                }
+
+
+
+
                 Spacer(modifier = Modifier.height(12.dp))
-                if (movie.releaseYear == null) {
-                    Text(text = "Missing release year : id-" + movie.id)
-                } else {
+                if(movie.releaseYear!=null){
                     Text(
                         text = movie.releaseYear.year.toString(),
                         style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Normal)
                     )
+                }else{
+                    Text(
+                        text = "Missing release year",
+                        style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                    )
                 }
+
             }
 
             Column() {

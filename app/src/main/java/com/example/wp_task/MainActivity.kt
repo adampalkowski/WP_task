@@ -13,12 +13,12 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.room.Room
-import com.example.wp_task.Screens.MovieEvents
-import com.example.wp_task.Screens.ScreenNav
-import com.example.wp_task.ViewModels.FavouritesViewModel
-import com.example.wp_task.ViewModels.MainViewModel
-import com.example.wp_task.Repo.MovieDatabase
-import com.example.wp_task.Repo.MovieRepository
+import com.example.wp_task.screens.MovieEvents
+import com.example.wp_task.screens.ScreenNav
+import com.example.wp_task.viewModels.FavouritesViewModel
+import com.example.wp_task.viewModels.MainViewModel
+import com.example.wp_task.repo.MovieDatabase
+import com.example.wp_task.repo.MovieRepository
 import com.example.wp_task.model.Movie
 import com.example.wp_task.model.MovieData
 import com.example.wp_task.ui.theme.WP_taskTheme
@@ -42,7 +42,8 @@ class MainActivity : ComponentActivity() {
                 var movieList by remember { mutableStateOf<List<MovieData>>(emptyList()) }
                 movieList = favouritesViewModel.movies.value as List<MovieData>
 
-                if(movie!=null){
+
+                movie?.let { nonNullMovie ->
                     ScreenNav(
                         onEvent = { event ->
                             when (event) {
@@ -51,23 +52,22 @@ class MainActivity : ComponentActivity() {
                                 }
                                 is MovieEvents.AddToFavourite -> {
                                     val movieData = MovieData(
-                                        _id = movie!!._id.toString(),
-                                        titleText = movie!!.titleText?.text.toString()
+                                        _id = nonNullMovie._id,
+                                        titleText = nonNullMovie.titleText.text
                                     )
                                     favouritesViewModel.insertMovie(movieData)
                                 }
                                 is MovieEvents.UnLike -> {
-                                    val movieData =
-                                        MovieData(_id = event.id, titleText = event.title)
+                                    val movieData = MovieData(_id = event.id, titleText = event.title)
                                     favouritesViewModel.deleteMovie(movieData)
                                 }
                             }
                         },
-                        movie = movie!!,
+                        movie = nonNullMovie,
                         movieList = movieList,
                     )
-                }else{
-                    Box(modifier = Modifier.fillMaxSize()){
+                } ?: run {
+                    Box(modifier = Modifier.fillMaxSize()) {
                         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                     }
                 }
@@ -78,18 +78,22 @@ class MainActivity : ComponentActivity() {
                     favouritesViewModel.clearToastState()
                 }
                 mainViewModel.currentMovie.observe(
-                    this,
-                    androidx.lifecycle.Observer {
-                        when (it) {
-                            is Response.Success -> {
-                                movie=it.data
-                            }
-                            is Response.Failure -> {
-                            }
-                            is Response.Loading -> {
-                            }
+                    this
+                ) {
+                    when (it) {
+                        is Response.Success -> {
+                            // Update the current movie
+                            movie = it.data
                         }
-                    })
+                        is Response.Failure -> {
+                            // Handle failure, fetch new movie
+                            mainViewModel.getNextMovie()
+                        }
+                        is Response.Loading -> {
+                            // Handle loading
+                        }
+                    }
+                }
 
             }
         }

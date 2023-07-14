@@ -1,4 +1,4 @@
-package com.example.wp_task.Repo
+package com.example.wp_task.repo
 
 import com.example.wp_task.model.MovieData
 import io.reactivex.rxjava3.core.Completable

@@ -1,4 +1,4 @@
-package com.example.wp_task.Repo
+package com.example.wp_task.repo
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

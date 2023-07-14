@@ -1,10 +1,10 @@
-package com.example.wp_task.ViewModels
+package com.example.wp_task.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.wp_task.model.MovieData
-import com.example.wp_task.Repo.MovieRepository
+import com.example.wp_task.repo.MovieRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers

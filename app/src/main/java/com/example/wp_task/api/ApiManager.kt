@@ -1,16 +1,16 @@
-package com.example.wp_task.Api
+package com.example.wp_task.api
 
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiManager{
-    val baseUrl = "https://moviesdatabase.p.rapidapi.com/"
+    private const val baseUrl = "https://moviesdatabase.p.rapidapi.com/"
 
-    val retrofit = Retrofit.Builder()
+    private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .build()
-    val movieApiService = retrofit.create(ApiService::class.java)
+    val movieApiService: ApiService = retrofit.create(ApiService::class.java)
 }
