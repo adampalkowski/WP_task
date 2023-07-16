@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 
 /**
- View-model that handles interaction with room database, to store favorites.
+ * View Model that handles interaction with room database, to store favorites.
  */
 class FavouritesViewModel(private val movieRepository: MovieRepository) : ViewModel() {
     // BehaviorSubject to hold the list of movies

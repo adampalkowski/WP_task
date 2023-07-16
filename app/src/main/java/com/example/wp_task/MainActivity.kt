@@ -21,6 +21,7 @@ import com.example.wp_task.repo.MovieDatabase
 import com.example.wp_task.repo.MovieRepository
 import com.example.wp_task.model.Movie
 import com.example.wp_task.model.MovieData
+import com.example.wp_task.repo.Injection
 import com.example.wp_task.ui.theme.WP_taskTheme
 
 class MainActivity : ComponentActivity() {
@@ -29,12 +30,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        /*Get the room database*/
-        val database = Room.databaseBuilder(this, MovieDatabase::class.java, "movie_database.db")
-            .build()
-        val movieDao = database.movieDao()
-        val movieRepository = MovieRepository(movieDao)
-        val favouritesViewModel = FavouritesViewModel(movieRepository = movieRepository)
+        val movieRepository = MovieRepository(Injection.provideUserDataSource(this))
+        val favouritesViewModel = FavouritesViewModel(movieRepository)
 
         setContent {
             WP_taskTheme {
