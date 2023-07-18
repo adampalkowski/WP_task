@@ -13,6 +13,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.room.Room
+import com.example.wp_task.di.AppComponent
+import com.example.wp_task.di.AppModule
 import com.example.wp_task.screens.MovieEvents
 import com.example.wp_task.screens.ScreenNav
 import com.example.wp_task.viewModels.FavouritesViewModel
@@ -21,17 +23,19 @@ import com.example.wp_task.repo.MovieDatabase
 import com.example.wp_task.repo.MovieRepository
 import com.example.wp_task.model.Movie
 import com.example.wp_task.model.MovieData
-import com.example.wp_task.repo.Injection
 import com.example.wp_task.ui.theme.WP_taskTheme
+import dagger.android.DaggerApplication
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModels()
+    @Inject
+    lateinit var favouritesViewModel: FavouritesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val movieRepository = MovieRepository(Injection.provideUserDataSource(this))
-        val favouritesViewModel = FavouritesViewModel(movieRepository)
+        (application as MyApp).appComponent.inject(this)
 
         setContent {
             WP_taskTheme {

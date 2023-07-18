@@ -3,18 +3,20 @@ package com.example.wp_task.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.wp_task.MyApp
 import com.example.wp_task.model.MovieData
 import com.example.wp_task.repo.MovieRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import javax.inject.Inject
 
 
 /**
  * View Model that handles interaction with room database, to store favorites.
  */
-class FavouritesViewModel(private val movieRepository: MovieRepository) : ViewModel() {
+class FavouritesViewModel @Inject constructor(private val movieRepository: MovieRepository) : ViewModel() {
     // BehaviorSubject to hold the list of movies
     val movies: BehaviorSubject<List<MovieData>> = BehaviorSubject.createDefault(emptyList())
 
@@ -23,7 +25,7 @@ class FavouritesViewModel(private val movieRepository: MovieRepository) : ViewMo
     val toastState: LiveData<String> = _toastState
 
     init {
-        fetchMovies()
+     fetchMovies()
     }
 
     // Clear the toast state
@@ -41,13 +43,16 @@ class FavouritesViewModel(private val movieRepository: MovieRepository) : ViewMo
                     movies.onNext(list)
                 },
                 { error ->
-                    _toastState.value = "Failed to fetch movies"
-                    fetchMovies()
+                    handleFetchMoviesError()
                 }
             )
             .let { disposables.add(it) }
     }
 
+    // Handle the error when fetching movies
+    private fun handleFetchMoviesError() {
+        _toastState.value = "Failed to fetch movies"
+    }
     // Insert a movie into the repository
     fun insertMovie(movie: MovieData) {
         movieRepository.insertMovie(movie)
