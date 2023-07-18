@@ -4,37 +4,33 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.room.Room
-import com.example.wp_task.di.AppComponent
-import com.example.wp_task.di.AppModule
-import com.example.wp_task.screens.MovieEvents
-import com.example.wp_task.screens.ScreenNav
-import com.example.wp_task.viewModels.FavouritesViewModel
-import com.example.wp_task.viewModels.MainViewModel
-import com.example.wp_task.repo.MovieDatabase
-import com.example.wp_task.repo.MovieRepository
 import com.example.wp_task.model.Movie
 import com.example.wp_task.model.MovieData
+import com.example.wp_task.screens.MovieEvents
+import com.example.wp_task.screens.ScreenNav
 import com.example.wp_task.ui.theme.WP_taskTheme
-import dagger.android.DaggerApplication
+import com.example.wp_task.viewModels.FavouritesViewModel
+import com.example.wp_task.viewModels.MainViewModel
 import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
-    private val mainViewModel: MainViewModel by viewModels()
+    @Inject
+    lateinit var mainViewModel: MainViewModel
     @Inject
     lateinit var favouritesViewModel: FavouritesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         (application as MyApp).appComponent.inject(this)
 
         setContent {
