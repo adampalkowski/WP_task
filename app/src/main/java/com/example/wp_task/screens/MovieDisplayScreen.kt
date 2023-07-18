@@ -12,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -86,7 +88,7 @@ fun MovieDisplayScreen(movie: Movie, onEvent: (MovieEvents) -> Unit,favourite:Bo
 
             Column() {
                 Row(modifier = Modifier.padding(horizontal = 24.dp, vertical = 24.dp)) {
-                    IconButton(onClick = { onEvent(MovieEvents.NewMovie) }) {
+                    IconButton(modifier=Modifier.semantics { contentDescription="Refresh" },onClick = { onEvent(MovieEvents.NewMovie) }) {
                         Icon(
                             modifier = Modifier.size(48.dp),
                             painter = painterResource(id = R.drawable.ic_refresh),
@@ -95,7 +97,7 @@ fun MovieDisplayScreen(movie: Movie, onEvent: (MovieEvents) -> Unit,favourite:Bo
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     if(favouriteState){
-                        IconButton(onClick = { onEvent(MovieEvents.UnLike(id=movie._id, title = movie.titleText.text))
+                        IconButton(modifier=Modifier.semantics { contentDescription="Favourites" },onClick = { onEvent(MovieEvents.UnLike(id=movie._id, title = movie.titleText.text))
                             favouriteState=false
                         }) {
                             Icon(
