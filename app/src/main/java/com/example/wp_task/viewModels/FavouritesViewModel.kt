@@ -3,9 +3,9 @@ package com.example.wp_task.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.wp_task.MyApp
 import com.example.wp_task.model.MovieData
 import com.example.wp_task.repo.MovieRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -16,6 +16,7 @@ import javax.inject.Inject
 /**
  * View Model that handles interaction with room database, to store favorites.
  */
+@HiltViewModel
 class FavouritesViewModel @Inject constructor(private val movieRepository: MovieRepository) : ViewModel() {
     // BehaviorSubject to hold the list of movies
     val movies: BehaviorSubject<List<MovieData>> = BehaviorSubject.createDefault(emptyList())

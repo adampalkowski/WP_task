@@ -1,6 +1,5 @@
 package com.example.wp_task.di
 
-import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.example.wp_task.api.ApiService
@@ -9,47 +8,36 @@ import com.example.wp_task.repo.MovieDatabase
 import com.example.wp_task.repo.MovieRepository
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Singleton
 
 
 private const val baseUrl = "https://moviesdatabase.p.rapidapi.com/"
 
 @Module
-class AppModule (val application: Application){
-    @Singleton
-    @Provides
-    fun provideApplication(): Application {
-        return application
-    }
+@InstallIn(ViewModelComponent::class)
+class AppModule {
 
-    @Singleton
     @Provides
-    fun provideContext(application: Application): Context {
-        return application.applicationContext
-    }
+    fun provideContext(   @ApplicationContext
+                          context: Context): Context =context
 
-    @Singleton
     @Provides
-    fun provideMovieDatabase(context: Context): MovieDatabase {
-        return Room.databaseBuilder(context, MovieDatabase::class.java, "movie_database.db").build()
-    }
+    fun provideMovieDatabase(context: Context): MovieDatabase= Room.databaseBuilder(context, MovieDatabase::class.java, "movie_database.db").build()
 
-    @Singleton
+
     @Provides
-    fun provideMovieDao(movieDatabase: MovieDatabase): MovieDao {
-        return movieDatabase.movieDao()
-    }
+    fun provideMovieDao(movieDatabase: MovieDatabase): MovieDao = movieDatabase.movieDao()
 
-    @Singleton
+
     @Provides
-    fun provideMovieRepository(movieDao: MovieDao): MovieRepository {
-        return MovieRepository(movieDao)
-    }
+    fun provideMovieRepository(movieDao: MovieDao): MovieRepository = MovieRepository(movieDao)
 
-    @Singleton
+
     @Provides
     fun provideApiService(): ApiService {
         val retrofit = Retrofit.Builder()

@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id "org.jetbrains.kotlin.kapt"
     id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 
 }
 
@@ -53,8 +54,12 @@ android {
         }
     }
 }
-
+kapt {
+    correctErrorTypes true
+}
 dependencies {
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
     def daggerVer = 2.47 // or latest version
 
     implementation "com.google.dagger:dagger:$daggerVer"

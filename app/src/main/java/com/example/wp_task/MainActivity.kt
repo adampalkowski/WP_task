@@ -1,9 +1,11 @@
 package com.example.wp_task
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
@@ -21,17 +23,16 @@ import com.example.wp_task.screens.ScreenNav
 import com.example.wp_task.ui.theme.WP_taskTheme
 import com.example.wp_task.viewModels.FavouritesViewModel
 import com.example.wp_task.viewModels.MainViewModel
-import javax.inject.Inject
+import com.example.wp_task.viewModels.TAG
+import dagger.hilt.android.AndroidEntryPoint
+@AndroidEntryPoint
 
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var mainViewModel: MainViewModel
-    @Inject
-    lateinit var favouritesViewModel: FavouritesViewModel
 
+    private val favouritesViewModel by viewModels<FavouritesViewModel>()
+    private val mainViewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (application as MyApp).appComponent.inject(this)
 
         setContent {
             WP_taskTheme {
@@ -87,6 +88,8 @@ class MainActivity : ComponentActivity() {
                         }
                         is Response.Failure -> {
                             // Handle failure, fetch new movie
+                            Log.d(TAG,"Failure")
+
                             mainViewModel.getNextMovie()
                         }
                         is Response.Loading -> {

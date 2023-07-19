@@ -43,7 +43,6 @@ fun MovieDisplayScreen(movie: Movie, onEvent: (MovieEvents) -> Unit,favourite:Bo
             .fillMaxSize()
             .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.SpaceBetween) {
             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
-
                 if(movie.primaryImage!=null){
                     AsyncImage(modifier = Modifier,model = movie.primaryImage.url, contentDescription = "movie poster")
 

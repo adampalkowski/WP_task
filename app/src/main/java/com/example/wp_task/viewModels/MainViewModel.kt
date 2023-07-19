@@ -8,6 +8,7 @@ import com.example.wp_task.Response
 import com.example.wp_task.api.ApiService
 import com.example.wp_task.model.Data
 import com.example.wp_task.model.Movie
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -20,7 +21,7 @@ const val TAG="MainViewModelDebug"
 /**
 View-model that handles interaction with the api, fetching data.
  */
-
+@HiltViewModel
 class MainViewModel @Inject constructor(private val apiService: ApiService) : ViewModel() {
     private val disposables = CompositeDisposable()
     private val _currentMovie = MutableLiveData<Response<Movie>>()
@@ -30,10 +31,14 @@ class MainViewModel @Inject constructor(private val apiService: ApiService) : Vi
     private var currentMovieIndex = 0
 
     init {
+        Log.d(TAG,"inti")
+
         fetchData()
     }
 
     private fun fetchData() {
+        Log.d(TAG,"fetchData")
+
         val disposable = apiService.getRandom(
             list_query,
             apiKey,
@@ -59,6 +64,7 @@ class MainViewModel @Inject constructor(private val apiService: ApiService) : Vi
     }
 
     fun getNextMovie() {
+        Log.d(TAG,"GET NEXT MOVIE")
         if (currentMovieIndex < movies.size) {
             val nextMovie = movies[currentMovieIndex]
             currentMovieIndex++
